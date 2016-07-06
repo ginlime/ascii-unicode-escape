@@ -6,7 +6,7 @@ export enum MODE {
 }
 
 const RX_NONASCII = /([^\u0000-\u007f]+)/g;
-const RX_UNICODE = /(\\u([0-9A-Fa-f]{4}))/g
+const RX_UNICODE = /((\\u|&#x)([0-9A-Fa-f]{4});*)/g
 
 export class Escaper {
 
@@ -57,7 +57,7 @@ export class Escaper {
      * Resolve Unicode escape-sequences to simple non-ASCII characters.
      */
     public unescape(text: string): string {
-        return text.replace(RX_UNICODE, (match: string, sequence: string, code: string) => {
+        return text.replace(RX_UNICODE, (match: string, sequence: string, modifier: string, code: string) => {
             return String.fromCharCode(parseInt(code, 16));
         });
     }
